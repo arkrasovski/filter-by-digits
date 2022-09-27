@@ -18,7 +18,43 @@ namespace FilterTask
         /// </example>
         public static int[] FilterByDigit(int[]? source, int digit)
         {
-            throw new NotImplementedException("You need to implement this function.");
+            if (digit > 9)
+            {
+                throw new ArgumentOutOfRangeException(paramName: "Expected digit can not be more than nine.");
+            }
+
+            if (digit < 0)
+            {
+                throw new ArgumentOutOfRangeException("Expected digit can not be less than zero.");
+            }
+
+            if (source == null)
+            {
+                throw new ArgumentNullException("Array can not be null.");
+            }
+
+            if (source.Length == 0)
+            {
+                throw new ArgumentException("Array can not be empty.");
+            }
+
+            int[] result = Array.Empty<int>();
+
+            foreach (int s in source)
+            {
+                if (HasDigit(s, digit))
+                {
+                    Array.Resize(ref result, result.Length + 1);
+                    result[result.Length - 1] = s;
+                }
+            }
+
+            return result;
+        }
+
+        private static bool HasDigit(int val, int digit)
+        {
+            return val / 10 != 0 ? Math.Abs(val) % 10 == digit || HasDigit(val / 10, digit) : Math.Abs(val) == digit;
         }
     }
 }
